@@ -3,17 +3,23 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 
-# 1. 网页基础设置
+# 1. 网页基础设置（必须放在第一句）
 st.set_page_config(page_title="BOM差异分析看板", layout="wide", page_icon="📊")
 
-# 自定义 CSS 让页面稍微好看一点（隐藏默认菜单）
+# ==========================================
+# 🔒 隐藏菜单与底部信息（只读模式设置）
+# ==========================================
 hide_menu_style = """
         <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
+        #MainMenu {visibility: hidden;}  /* 隐藏右上角三个点 */
+        footer {visibility: hidden;}     /* 隐藏底部的 Streamlit 标识 */
+        header {visibility: hidden;}     /* 隐藏顶部黑条 */
         </style>
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+# 清除上传缓存的警告
+st.session_state.update(st.session_state)
 
 # 2. 侧边栏：数据源与导航
 with st.sidebar:
@@ -27,7 +33,7 @@ with st.sidebar:
     
     st.divider()
     
-    # 关键升级：用 st.radio 实现真正的页面切换
+    # 页面切换
     st.write("**导航菜单：**")
     page = st.radio(
         "选择模块：",
@@ -131,7 +137,6 @@ if page == "📈 BOM差异分析":
 elif page == "🏠 成本中心":
     st.subheader("🏠 成本中心概览")
     st.info("这里展示全厂总成本、材料费、人工费的大盘数据。")
-    # 可以在这里加别的图表
     st.metric(label="本月总领料成本 (预估)", value="¥1,250,000", delta="-2.5%")
 
 elif page == "📦 物料管控":
